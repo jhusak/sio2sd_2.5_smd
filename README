@@ -1,0 +1,14 @@
+1. Atari tools
+
+  To assemble atari tools you have to use MADASS:
+    mads: http://mads.atari8.info/
+
+  To compile mads you should use Free Pascal Compiler:
+    fpc: http://www.freepascal.org/
+
+2. AVR binary
+
+  To compile AVR binary you need standard avr-libc and avr-gcc:
+    avr-libc: http://www.nongnu.org/avr-libc/
+    avr-gcc: http://gcc.gnu.org/
+

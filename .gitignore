@@ -1,0 +1,12 @@
+*.o
+*.hex
+*.dasm
+*.bin
+*.map
+*.out
+*.lst
+/atari_conf_tool/sio2sd.xex
+/atari_conf_tool/sio2sd.xex.h
+/atari_conf_tool/pajero_sio2sd.xex.h
+/tohex/tohex
+/xex_loader/xex_loader.bin.h
