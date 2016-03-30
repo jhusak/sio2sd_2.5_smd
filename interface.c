@@ -213,7 +213,7 @@ void interface_card_fat_type(uint8_t ft) {
 	lcd_put_line(1,linebuff);
 }
 
-void interface_cfg_print(uint8_t lno,const prog_char *option) {
+void interface_cfg_print(uint8_t lno,const PGM_P option) {
 	char c;
 	uint8_t *ptr;
 	memset(linebuff,' ',40);
@@ -229,12 +229,12 @@ void interface_cfg_print(uint8_t lno,const prog_char *option) {
 	lcd_put_line(lno,linebuff);
 }
 
-void interface_cfg_option_value(const prog_char *option,const prog_char *value) {
+void interface_cfg_option_value(const PGM_P option,const PGM_P value) {
 	interface_cfg_print(0,option);
 	interface_cfg_print(1,value);
 }
 
-void interface_cfg_option_speed(const prog_char *option,uint32_t speed,uint8_t speedindex) {
+void interface_cfg_option_speed(const PGM_P option,uint32_t speed,uint8_t speedindex) {
 	char c;
 	interface_cfg_print(0,option);
 	memset(linebuff,' ',40);
@@ -246,7 +246,7 @@ void interface_cfg_option_speed(const prog_char *option,uint32_t speed,uint8_t s
 	lcd_put_line(1,linebuff);
 }
 
-void interface_cfg_option_number(const prog_char *option,uint8_t number) {
+void interface_cfg_option_number(const PGM_P option,uint8_t number) {
 	interface_cfg_print(0,option);
 	memset(linebuff,' ',40);
 	linebuff[0]=number+'0';

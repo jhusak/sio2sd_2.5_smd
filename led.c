@@ -26,10 +26,10 @@
 #define LED_DDR DDRC
 #define LED_PIN PINC
 
-#define LED_1 5
-#define LED_2 6
-#define LED_3 7
-#define LED_MASK 0xE0
+#define LED_1 1
+#define LED_2 2
+#define LED_3 3
+#define LED_MASK 0x0E
 
 // modes:
 //  0 - LED_2 = sd_read ; LED_3 = sd_write

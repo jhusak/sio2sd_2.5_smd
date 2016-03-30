@@ -37,9 +37,9 @@ void interface_eio(void);
 
 void interface_card_fat_type(uint8_t ft);
 
-void interface_cfg_option_value(const prog_char *option,const prog_char *value);
-void interface_cfg_option_speed(const prog_char *option,uint32_t speed,uint8_t speedindex);
-void interface_cfg_option_number(const prog_char *option,uint8_t number);
+void interface_cfg_option_value(const PGM_P option,const PGM_P value);
+void interface_cfg_option_speed(const PGM_P option,uint32_t speed,uint8_t speedindex);
+void interface_cfg_option_number(const PGM_P option,uint8_t number);
 
 void interface_firmware_update(void);
 

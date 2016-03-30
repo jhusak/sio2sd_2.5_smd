@@ -3,7 +3,7 @@ VERSMAJOR=2
 VERSMINOR=5
 
 MCU = atmega32
-AVRDUDE = avrdude -P usb -c avrisp2 -p $(MCU)
+AVRDUDE = avrdude -B 0.1 -P usb -c usbasp -p $(MCU)
 
 AVRCC = avr-gcc
 #AVRCC = avr-gcc-4.1.2
@@ -75,11 +75,23 @@ sio.o: sio.c delay.h keys.h lcd.h interface.h fat.h setup.h led.h cbisbi.h xex_l
 load: sio2sd_all.bin
 	$(AVRDUDE) -e -U flash:w:sio2sd_all.bin
 
+save: sio2sd_all.bin
+	$(AVRDUDE)  -U flash:r:test:i
+
+load3: sio2sd_all_v3.1rc2.bin
+	$(AVRDUDE) -e -U flash:w:sio2sd_all_v3.1rc2.bin
+
+save3: sio2sd_all_v3.1rc2.bin
+	$(AVRDUDE)  -U flash:r:test:i
+
+status:
+	$(AVRDUDE) -v
+
 fuse_mega32:
 # for 7.32 MHz version
 #	$(AVRDUDE) -U hfuse:w:0xd1:m -U lfuse:w:0xff:m
 # for 14.31 MHz version
-	$(AVRDUDE) -U hfuse:w:0xc3:m -U lfuse:w:0xff:m
+	$(AVRDUDE) -U hfuse:w:0xc3:m -U lfuse:w:0x3f:m
 
 #-------------------
 clean:

@@ -21,49 +21,51 @@
 #include <avr/io.h>
 #include <inttypes.h>
 
-#define KEYS_PORT PORTB
-#define KEYS_DDR DDRB
-#define KEYS_PIN PINB
+#define KEYS_PORT PORTD
+#define KEYS_DDR DDRD
+#define KEYS_PIN PIND
+#define KEYS_MASK 0xf8
+#define KEYS_SHIFT 0x80
 
 // set low 5 bits as inputs, and pullups them
 void keys_init(void) {
-	KEYS_PORT = KEYS_PORT | 0x1F;
-	KEYS_DDR = KEYS_DDR & 0xE0;
+	KEYS_PORT = KEYS_PORT | KEYS_MASK;
+	KEYS_DDR = KEYS_DDR & (~KEYS_MASK);
 }
 
 uint8_t keys_shift(void) {
 	uint8_t c;
-	c = KEYS_PIN & 0x1F;
-	return (c==0x10 || c==0x0F)?1:0;
+	c = KEYS_PIN & KEYS_MASK;
+	return (c==KEYS_SHIFT || c==(~KEYS_SHIFT)&KEYS_MASK)?1:0;
 }
 
 uint8_t keys_get(void) {
 	uint8_t c;
-	c = KEYS_PIN & 0x1F;
-	switch (c) {
-	case 0x1E:
-	case 0x01:
+	c = KEYS_PIN;
+	switch (c>>3) {
+	case 0b11110:
+	case 0b00001:
 		return 1;
-	case 0x1D:
-	case 0x02:
+	case 0b11101:
+	case 0b00010:
 		return 2;
-	case 0x1B:
-	case 0x04:
+	case 0b11011:
+	case 0b00100:
 		return 3;
-	case 0x17:
-	case 0x08:
+	case 0b10111:
+	case 0b01000:
 		return 4;
-	case 0x0E:
-	case 0x11:
+	case 0b01110:
+	case 0b10001:
 		return 5;
-	case 0x0D:
-	case 0x12:
+	case 0b01101:
+	case 0b10010:
 		return 6;
-	case 0x0B:
-	case 0x14:
+	case 0b01011:
+	case 0b10100:
 		return 7;
-	case 0x07:
-	case 0x18:
+	case 0b00111:
+	case 0b11000:
 		return 8;
 	}
 	return 0;

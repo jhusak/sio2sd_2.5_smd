@@ -31,9 +31,13 @@
 #define LCD_PIN PINA
 #define LCD_DDR DDRA
 
-#define LCD_E 6
-#define LCD_RW 5
-#define LCD_RS 4
+#define LCDDATA_PORT PORTB
+#define LCDDATA_PIN PINB
+#define LCDDATA_DDR DDRB
+
+#define LCD_E 5
+#define LCD_RW 6
+#define LCD_RS 7
 
 static uint8_t lcdon;
 
@@ -56,21 +60,21 @@ void lcd_write(uint8_t data,uint8_t reg) {
 		sbi(LCD_PORT,LCD_RS);
 	}
 
-	LCD_DDR |= 0x0F;
+	LCDDATA_DDR |= 0x0F;
 
-	LCD_PORT = (LCD_PORT & 0xF0) | ((data>>4) & 0x0F);
+	LCDDATA_PORT = (LCDDATA_PORT & 0xF0) | ((data>>4) & 0x0F);
 	sbi(LCD_PORT,LCD_E);
 	lcd_delay_loop(3);
 	cbi(LCD_PORT,LCD_E);
 
 	if (reg<2) {
-		LCD_PORT = (LCD_PORT & 0xF0) | (data & 0x0F);
+		LCDDATA_PORT = (LCDDATA_PORT & 0xF0) | (data & 0x0F);
 		sbi(LCD_PORT,LCD_E);
 		lcd_delay_loop(3);
 		cbi(LCD_PORT,LCD_E);
 	}
 
-	LCD_DDR &= 0xF0;
+	LCDDATA_DDR &= 0xF0;
 
 	sei();
 }
@@ -86,16 +90,16 @@ uint8_t lcd_read(uint8_t reg) {
 		sbi(LCD_PORT,LCD_RS);
 	}
 
-	LCD_DDR &= 0xF0;
+	LCDDATA_DDR &= 0xF0;
 
 	sbi(LCD_PORT,LCD_E);
 	lcd_delay_loop(3);
-	data = LCD_PIN << 4;
+	data = LCDDATA_PIN << 4;
 	cbi(LCD_PORT,LCD_E);
 	lcd_delay_loop(3);
 	sbi(LCD_PORT,LCD_E);
 	lcd_delay_loop(3);
-	data = data | (LCD_PIN & 0x0F);
+	data = data | (LCDDATA_PIN & 0x0F);
 	cbi(LCD_PORT,LCD_E);
 
 	sei();
@@ -116,7 +120,7 @@ void lcd_waitbusy(void) {
 
 #ifndef FIRMWARE
 void lcd_init(void) {
-	LCD_DDR |= 0x70;
+	LCD_DDR |= 0xE0;
 	cbi(LCD_PORT,LCD_E);
 	lcdon=1;
 	DELAY(US_TO_TICKS(30000))

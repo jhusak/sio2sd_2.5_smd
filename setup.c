@@ -38,26 +38,26 @@ static uint8_t option;
 static uint8_t value,maxvalue;
 static uint8_t maxval[OPTIONS]={17,4,2,3,2};
 static uint8_t defaultval[OPTIONS]={6,3,2,0,1};
-static const char hsopt[] __attribute__ ((progmem)) = "sio high speed:";
-static const char hsoff[] __attribute__ ((progmem)) = "off";
-static const char ctopt[] __attribute__ ((progmem)) = "cfg tool load:";
-static const char ctval0[] __attribute__ ((progmem)) = "never";
-static const char ctval1[] __attribute__ ((progmem)) = "startup+shift";
-static const char ctval2[] __attribute__ ((progmem)) = "every startup";
-static const char ctval3[] __attribute__ ((progmem)) = "no card";
-static const char ctval4[] __attribute__ ((progmem)) = "shift pressed";
-static const char* ctval[] __attribute__ ((progmem)) = {ctval0,ctval1,ctval2,ctval3,ctval4};
-static const char leopt[] __attribute__ ((progmem)) = "LED mode:";
-static const char leval0[] __attribute__ ((progmem)) = "SD read/write";
-static const char leval1[] __attribute__ ((progmem)) = "SIO read/write";
-static const char leval2[] __attribute__ ((progmem)) = "SD act/SIO act";
-static const char* leval[] __attribute__ ((progmem)) = {leval0,leval1,leval2};
-static const char diopt[] __attribute__ ((progmem)) = "device id:";
-static const char wpopt[] __attribute__ ((progmem)) = "write protect:";
-static const char wpval0[] __attribute__ ((progmem)) = "never";
-static const char wpval1[] __attribute__ ((progmem)) = "obey ATR flag";
-static const char wpval2[] __attribute__ ((progmem)) = "always";
-static const char* wpval[] __attribute__ ((progmem)) = {wpval0,wpval1,wpval2};
+static const char hsopt[] PROGMEM = "sio high speed:";
+static const char hsoff[] PROGMEM= "off";
+static const char ctopt[] PROGMEM= "cfg tool load:";
+static const char ctval0[] PROGMEM= "never";
+static const char ctval1[] PROGMEM= "startup+shift";
+static const char ctval2[] PROGMEM= "every startup";
+static const char ctval3[] PROGMEM= "no card";
+static const char ctval4[] PROGMEM= "shift pressed";
+static PGM_P const ctval[] PROGMEM= {ctval0,ctval1,ctval2,ctval3,ctval4};
+static const char leopt[] PROGMEM= "LED mode:";
+static const char leval0[] PROGMEM= "SD read/write";
+static const char leval1[] PROGMEM= "SIO read/write";
+static const char leval2[] PROGMEM= "SD act/SIO act";
+static PGM_P const leval[] PROGMEM= {leval0,leval1,leval2};
+static const char diopt[] PROGMEM= "device id:";
+static const char wpopt[] PROGMEM= "write protect:";
+static const char wpval0[] PROGMEM= "never";
+static const char wpval1[] PROGMEM= "obey ATR flag";
+static const char wpval2[] PROGMEM= "always";
+static PGM_P const wpval[] PROGMEM= {wpval0,wpval1,wpval2};
 
 uint32_t setup_my_division(uint32_t d,uint16_t v) {
 	uint32_t r=0,c=0;
@@ -89,13 +89,13 @@ void setup_refresh(void) {
 			interface_cfg_option_speed(hsopt,setup_my_division(178977250ULL,(2*(value+7))),value);
 		}
 	} else if (option==1) {
-		interface_cfg_option_value(ctopt,(prog_char*)pgm_read_word(ctval+value));
+		interface_cfg_option_value(ctopt,(PGM_P)pgm_read_word(ctval+value));
 	} else if (option==2) {
-		interface_cfg_option_value(leopt,(prog_char*)pgm_read_word(leval+value));
+		interface_cfg_option_value(leopt,(PGM_P)pgm_read_word(leval+value));
 	} else if (option==3) {
 		interface_cfg_option_number(diopt,value);
 	} else {
-		interface_cfg_option_value(wpopt,(prog_char*)pgm_read_word(wpval+value));
+		interface_cfg_option_value(wpopt,(PGM_P)pgm_read_word(wpval+value));
 	}
 }
 

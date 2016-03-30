@@ -27,17 +27,21 @@
 
 #define nop()  __asm__ __volatile__ ("nop" ::)
 
-#define MMC_PORT PORTC
-#define MMC_DDR DDRC
-#define MMC_PIN PINC
+#define MMC_PORT PORTB
+#define MMC_DDR DDRB
+#define MMC_PIN PINB
 
-#define MMC_CS 0
-#define MMC_MOSI 1
-#define MMC_SCK 2
-#define MMC_MISO 3
-#define MMC_DETECT 4
-#define MMC_MASK 0x1F
+#define MMC_CS 4
+#define MMC_MOSI 5
+#define MMC_SCK 7
+#define MMC_MISO 6
+#define MMC_MASK 0xF0
 
+#define MMCDETECT_PORT PORTC
+#define MMCDETECT_DDR DDRC
+#define MMCDETECT_PIN PINC
+#define MMC_DETECT 0
+#define MMCDETECT_MASK (1<<MMC_DETECT)
 // #define LED_1 5
 // #define LED_2 6
 // #define LED_3 7
@@ -61,7 +65,8 @@ static void mmc_spi_flush(void);
 #ifndef FIRMWARE
 
 void mmc_init(void) {
-	MMC_PORT = (MMC_PORT & (~MMC_MASK)) | (1<<MMC_CS)|(1<<MMC_MOSI)|(1<<MMC_MISO)|(1<<MMC_DETECT);
+	MMC_PORT = (MMC_PORT & (~MMC_MASK)) | (1<<MMC_CS)|(1<<MMC_MOSI)|(1<<MMC_MISO);
+	MMCDETECT_PORT = (MMCDETECT_PORT & (~MMCDETECT_MASK)) | (1<<MMC_DETECT);
 //	MMC_PORT = (1<<MMC_CS)|(1<<MMC_MOSI)|(1<<MMC_MISO)|(1<<MMC_DETECT)|(1<<LED_1)|(1<<LED_2)|(1<<LED_3);
 
 //	sbi(MMC_PORT,MMC_CS);
@@ -71,6 +76,7 @@ void mmc_init(void) {
 //	cbi(MMC_PORT,MMC_SCK);
 
 	MMC_DDR = (MMC_DDR & (~MMC_MASK)) | (1<<MMC_MOSI)|(1<<MMC_SCK)|(1<<MMC_CS);
+	MMCDETECT_DDR = (MMCDETECT_DDR & (~MMCDETECT_MASK));
 //	MMC_DDR = (1<<MMC_MOSI)|(1<<MMC_SCK)|(1<<MMC_CS)|(1<<LED_1)|(1<<LED_2)|(1<<LED_3);
 //	cbi(MMC_DDR,MMC_MISO);
 //	cbi(MMC_DDR,MMC_DETECT);
@@ -96,7 +102,7 @@ void led_set(uint8_t no,uint8_t on) {
 */
 
 uint8_t mmc_card_removed(void) {
-	if (cardinslot!=0 && bit_is_set(MMC_PIN,MMC_DETECT)) {
+	if (cardinslot!=0 && bit_is_set(MMCDETECT_PIN,MMC_DETECT)) {
 		cardinslot=0;
 		return 1;
 	} else {
@@ -105,7 +111,7 @@ uint8_t mmc_card_removed(void) {
 }
 
 uint8_t mmc_card_inserted(void) {
-	if (cardinslot!=1 && bit_is_clear(MMC_PIN,MMC_DETECT)) {
+	if (cardinslot!=1 && bit_is_clear(MMCDETECT_PIN,MMC_DETECT)) {
 		cardinslot=1;
 		return 1;
 	} else {
